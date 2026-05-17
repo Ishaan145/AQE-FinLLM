@@ -73,7 +73,7 @@ def fetch_feed(name: str, url: str) -> list[dict]:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=str, default="articles.csv")
+    parser.add_argument("--output", type=str, default="rss_live.csv")
     args = parser.parse_args()
 
     print("[build_corpus] Fetching public RSS feeds...")
