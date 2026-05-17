@@ -21,12 +21,29 @@ import feedparser   # pip install feedparser
 
 # Public, free, no-auth feeds (India-market relevant)
 FEEDS = {
+    "NSE": "https://www.nseindia.com/feeds/announcements.xml",
     "RBI_press":   "https://www.rbi.org.in/pressreleases_rss.xml",
-    "RBI_notif":   "https://www.rbi.org.in/notifications_rss.xml",
     "SEBI":        "https://www.sebi.gov.in/sebirss.xml",
-    "ET_markets":  "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
-    "ET_econ":     "https://economictimes.indiatimes.com/news/economy/rssfeeds/1373380680.cms",
-    "BS_markets":  "https://www.business-standard.com/rss/markets-106.rss",
+    # Economic Times (these worked for you — keep)
+    "ET_markets":   "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
+    "ET_econ":      "https://economictimes.indiatimes.com/news/economy/rssfeeds/1373380680.cms",
+    "ET_stocks":    "https://economictimes.indiatimes.com/markets/stocks/rssfeeds/2146842.cms",
+    "ET_forex":     "https://economictimes.indiatimes.com/markets/forex/rssfeeds/1898055246.cms",
+    # Moneycontrol (India markets)
+    "MC_markets":   "https://www.moneycontrol.com/rss/marketreports.xml",
+    "MC_business":  "https://www.moneycontrol.com/rss/business.xml",
+    "MC_economy":   "https://www.moneycontrol.com/rss/economy.xml",
+    # Livemint
+    "Mint_markets": "https://www.livemint.com/rss/markets",
+    "Mint_money":   "https://www.livemint.com/rss/money",
+    # The Hindu BusinessLine
+    "BL_markets":   "https://www.thehindubusinessline.com/markets/feeder/default.rss",
+    # Yahoo Finance (global)
+    "YF_headline":  "https://finance.yahoo.com/news/rssindex",
+    # CNBC (global markets)
+    "CNBC_finance": "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664",
+    # Investing.com (global)
+    "INV_news":     "https://www.investing.com/rss/news_25.rss",
 }
 
 

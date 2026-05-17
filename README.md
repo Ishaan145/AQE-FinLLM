@@ -60,11 +60,26 @@ pip install -r requirements.txt
 pip install feedparser
 pip install fugashi unidic-lite
 python -m data.build_corpus --output articles.csv
+python -m data.normalize_corpus --input raw_news.csv --output articles.csv
 python -m data.fetch_sentiment --input articles.csv --output data\cache\
 python main.py --market NSEI --start 2015-01-01 --test_start 2022-01-01
 python main.py --market NIFTY50
 ```
+# 1. Download both datasets from Kaggle, unzip, place CSVs in:
+#    C:\Users\ishaan\Desktop\AQE-FINLLM\aqe_finllm\
+#    Rename them to:
+#      sp500_headlines_2008_2024.csv
+#      nifty_news_2003_2020.csv
 
+# 2. Combine + normalize (auto-detects both known filenames)
+python -m data.normalize_corpus
+
+# 3. Run FinBERT over the combined corpus
+python -m data.fetch_sentiment --input articles.csv --output data\cache\
+
+# 4. Run pipeline
+python main.py --market NIFTY50
+python main.py --market SP500
 
 main.py reads data/cache/sentiment_NIFTY50.csv; if that file doesn't exist, it silently substitutes zeros and continues. Module A (data/fetch_sentiment.py) is the separate script that creates that CSV.
 # Step 1 — run ONCE (slow, needs news corpus + FinBERT)
