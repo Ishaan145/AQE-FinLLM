@@ -36,17 +36,38 @@ torch.manual_seed(SEED)
 
 # Market keyword vocabularies for article tagging
 MARKET_KEYWORDS: dict[str, list[str]] = {
-    "SP500":     ["S&P", "SPX", "GSPC", "NYSE", "Fed", "Federal Reserve",
-                  "SEC", "FOMC", "US stocks", "Wall Street"],
-    "NIKKEI":    ["Nikkei", "N225", "TSE", "BOJ", "Bank of Japan",
-                  "Tokyo Stock", "Yen", "JPY", "Japan"],
-    "BITCOIN":   ["Bitcoin", "BTC", "crypto", "cryptocurrency",
-                  "blockchain", "Coinbase", "FTX", "Binance",
-                  "Ethereum", "ETH", "digital asset"],
-    "NIFTY50":   ["Nifty", "NSE", "BSE", "Sensex", "SEBI", "India",
-                  "RBI", "Reserve Bank of India", "INR", "rupee"],
-    "BANKNIFTY": ["Bank Nifty", "BANKNIFTY", "HDFC", "ICICI", "SBI",
-                  "Axis Bank", "Kotak", "banking sector India"],
+    "SP500": ["S&P", "S&P 500", "SPX", "GSPC", "Wall Street", "Dow Jones",
+              "Nasdaq", "Fed", "Federal Reserve", "FOMC", "Powell",
+              "US stocks", "US equities", "SEC", "Treasury yield",
+              "US inflation", "CPI", "nonfarm payroll", "rate hike",
+              "rate cut", "US recession", "S&P500", "bear market", 
+              "bull market", "record high", "market rally", "earnings"],
+    "NIKKEI": ["Nikkei", "Nikkei 225", "N225", "TSE", "Tokyo Stock",
+               "BOJ", "Bank of Japan", "Ueda", "Kuroda", "yen", "JPY",
+               "Japan equities", "Japanese stocks", "Topix",
+               "yield curve control", "YCC", "Japan inflation",
+               "Japan GDP", "Abenomics", "bear market", 
+               "bull market", "record high", "market rally", "earnings"],
+    "BITCOIN": ["Bitcoin", "BTC", "crypto", "cryptocurrency", "blockchain",
+                "Coinbase", "Binance", "FTX", "Ethereum", "ETH",
+                "digital asset", "stablecoin", "Tether", "USDT",
+                "crypto exchange", "halving", "Satoshi", "bitcoin ETF",
+                "Grayscale", "MicroStrategy", "crypto crash"],
+    "NIFTY50": ["Nifty", "Nifty 50", "Nifty50", "NSE", "BSE", "Sensex", "rupee", "INR",
+                "Dalal Street", "FII", "DII", "India GDP", "results",
+                "India inflation", "Indian economy", "net profit", "share price", 
+                "crude oil", "oil prices", "gold", "public sector", "private sector"
+                "Adani", "Reliance", "TCS", "Infosys", "Nifty index", "bear market", 
+                "bull market", "record high", "market rally", "earnings", "SEBI", "RBI", "Reserve Bank of India", "India equities",
+                "Indian stock market", "Indian markets"],
+    "BANKNIFTY": ["Bank Nifty", "BankNifty", "Nifty Bank", "HDFC Bank", "RBI",
+                  "ICICI Bank", "SBI", "State Bank of India", "Axis Bank",
+                  "Kotak Mahindra", "IndusInd", "PNB", "Indian banking", "Reserve Bank of India",
+                  "Indian banks", "bank stocks India", "NPA","RBI repo rate", "NPA",
+                  "banking sector India", "Yes Bank", "Bandhan Bank", "bear market",
+                  "bull market", "record high", "market rally", "earnings", "SEBI", "India equities",
+                  "Indian stock market", "Indian markets", "PSU banks", "basis points", "central bank",
+                  "credit growth", "banking crisis"],
 }
 
 
@@ -186,16 +207,41 @@ def aggregate_daily_sentiment(
 
     result: dict[str, pd.Series] = {}
 
+    def _is_japanese(s: str) -> bool:
+        # crude but effective: any Hiragana/Katakana/CJK char
+        return any(
+            "\u3040" <= ch <= "\u30ff" or "\u4e00" <= ch <= "\u9fff"
+            for ch in s
+        )
+
     for mkt, daily_texts in partition.items():
-        encoder = encoder_ja if lang_map.get(mkt) == "ja" else encoder_en
+        mode = lang_map.get(mkt, "en")
         records = {}
 
         for date_str, texts in daily_texts.items():
             if not texts:
                 records[date_str] = 0.0
                 continue
-            deltas = encoder.polarity(texts)
-            records[date_str] = float(deltas.mean()) if len(deltas) > 0 else 0.0
+
+            if mode == "ja":
+                deltas = encoder_ja.polarity(texts)
+            elif mode in ("ja,en", "mixed", "both"):
+                # route each article by detected language
+                ja_txt = [t for t in texts if _is_japanese(t)]
+                en_txt = [t for t in texts if not _is_japanese(t)]
+                parts = []
+                if ja_txt:
+                    parts.append(encoder_ja.polarity(ja_txt))
+                if en_txt:
+                    parts.append(encoder_en.polarity(en_txt))
+                deltas = (np.concatenate(parts)
+                          if parts else np.array([]))
+            else:  # "en"
+                deltas = encoder_en.polarity(texts)
+
+            records[date_str] = (
+                float(deltas.mean()) if len(deltas) > 0 else 0.0
+            )
 
         s = pd.Series(records, name=f"sentiment_{mkt}")
         s.index = pd.to_datetime(s.index)

@@ -17,14 +17,14 @@ MARKETS = {
 }
 
 # ── Data splits ─────────────────────────────────────────────────────
-TRAIN_START      = "2015-01-01"
+TRAIN_START      = "2013-06-01"
 TRAIN_END        = "2019-12-31"
 VAL_START        = "2020-01-01"
 VAL_END          = "2021-12-31"
-CALIB_START      = "2021-01-01"   # CQR calibration set
+CALIB_START      = "2021-01-01"
 CALIB_END        = "2021-12-31"
 TEST_START       = "2022-01-01"
-TEST_END         = "2025-12-31"
+TEST_END         = "2026-05-19"
 
 # ── Quantile grid (Module B/C) ─────────────────────────────────────
 TAU_GRID = [round(0.005 * i, 3) for i in range(1, 11)]   # 0.005 … 0.050

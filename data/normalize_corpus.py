@@ -38,6 +38,9 @@ KNOWN_DATASETS = [
     "sp500_headlines_2008_2024.csv",   # dyutidasmahaptra S&P 500 2008-2024
     "nifty_news_2003_2020.csv",        # hkapoor Indian financial news 2003-2020
     "rss_live.csv",                    # build_corpus.py live RSS (recent days)
+    "sp500_news_massive.csv",          # NEW: dense S&P 2009-2020
+    "bitcoin_news.csv",                # NEW: dedicated crypto corpus
+    "nikkei_news.csv",
 ]
 
 DATE_CANDIDATES = [

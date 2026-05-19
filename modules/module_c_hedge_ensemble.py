@@ -18,6 +18,7 @@ from config import HEDGE_ETA, HEDGE_WINDOW, TAU_GRID
 from utils.pinball import cvar_from_quantiles, rearrange_quantiles
 
 
+
 # ─────────────────────────────────────────────────────────────────────
 # Rolling Kupiec partial log-likelihood (loss signal for Hedge)
 # ─────────────────────────────────────────────────────────────────────
@@ -196,6 +197,7 @@ class HedgeEnsemble:
         base_preds:  dict[str, dict[float, np.ndarray]],
         y_returns:   np.ndarray,  # actual returns (T,)
     ) -> tuple[dict[float, np.ndarray], np.ndarray, np.ndarray]:
+        
         """
         Run the full online Hedge loop over T timesteps.
 

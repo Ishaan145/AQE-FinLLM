@@ -81,13 +81,9 @@ python -m data.build_corpus        # rss_live.csv
 python -m data.normalize_corpus    # articles.csv (RSS merged)
 # ONE-TIME sentiment (Module A + FinBERT)
 python -m data.fetch_sentiment --input articles.csv --output data\cache\
-python main.py --market NSEI --start 2015-01-01 --test_start 2022-01-01
+python -m data.fetch_market_data
 # RUN PIPELINE (market data + Modules B/C/D + backtest) — repeat per market
 python main.py --market NIFTY50
-python main.py --market SP500
-python main.py --market BITCOIN
-python main.py --market NIKKEI
-python main.py --market BANKNIFTY
 ```
 ---
 ## Note: 
