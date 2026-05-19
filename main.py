@@ -160,10 +160,17 @@ def run_pipeline(market: str, use_sentiment: bool = True) -> dict:
     )
     _, var_cal, _, _ = hedge_cal.run(cal_preds, y_cal)
 
+    # var_cal / var_aqe are POSITIVE VaR (loss) numbers.
+    # CQR works on the lower-tail QUANTILE, which is the negative
+    # of VaR: q = -VaR. Convert once, correct, convert back once.
+    q_cal = -var_cal          # calibration lower-tail quantile
+    q_te  = -var_aqe          # test lower-tail quantile
+
     cqr_result = run_cqr_pipeline(
-        y_cal, -var_cal, y_te, -var_aqe, alpha=cfg.CQR_ALPHA
+        y_cal, q_cal, y_te, q_te, alpha=cfg.CQR_ALPHA
     )
-    var_cqr    = -cqr_result["var_cqr"]    # back to positive VaR sign
+    # run_cqr_pipeline returns the corrected QUANTILE; VaR = -quantile
+    var_cqr = -cqr_result["var_cqr"]
     print(f"  CQR correction: {cqr_result['correction']:.5f}")
     print(f"  Empirical coverage: {cqr_result['coverage']:.4f} "
           f"(gap: {cqr_result['coverage_gap']:+.4f})")

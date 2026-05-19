@@ -75,7 +75,7 @@ LSTM_PARAMS = {
 OPTUNA_TRIALS = 300
 
 # ── Module C: Hedge ensemble ───────────────────────────────────────
-HEDGE_ETA        = 0.1          # learning rate (fixed; paper eq 9)
+HEDGE_ETA        = 0.1          # learning rate (paper eq 9)lower eta for smoother, less extreme weight swing
 HEDGE_WINDOW     = 60           # rolling Kupiec window (days)
 
 # ── Module D: CQR ──────────────────────────────────────────────────

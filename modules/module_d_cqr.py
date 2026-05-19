@@ -37,22 +37,21 @@ class ConformalQuantileRegressor:
         q_calib:   np.ndarray,   # (n,) base model's tau-quantile predictions
     ) -> float:
         """
-        Compute nonconformity scores and store CQR correction.
-        Paper Eq (3): s_i = rho_tau(y_i - q_hat_tau(x_i))
-        Paper Eq (4): correction = Q^+_{1-alpha}({s_i} ∪ {+inf})
+        Split-conformal calibration for a LOWER-tail quantile (CQR).
+        Romano et al. (2019): the conformity score for a one-sided
+        lower bound is the SIGNED residual E_i = q_hat(x_i) - y_i,
+        and the correction is its empirical (1-alpha) quantile.
 
-        Returns the scalar correction value.
+        A return that falls below the predicted quantile produces a
+        positive E_i; the (1-alpha) quantile of E_i is the amount the
+        band must shift down to reach nominal coverage.
         """
-        # Nonconformity scores: pinball residuals
-        scores = self._nonconformity_scores(y_calib, q_calib)
+        # Signed conformity residual for a lower bound
+        E = q_calib - y_calib                       # (n,)
 
-        # Include +inf per split-conformal finite-sample guarantee
-        n          = len(scores)
-        level      = np.ceil((1.0 - self.alpha) * (n + 1)) / n
-        level      = min(level, 1.0)
-        self._q_corr = float(np.quantile(
-            np.append(scores, np.inf), level
-        ))
+        n     = len(E)
+        level = min(np.ceil((1.0 - self.alpha) * (n + 1)) / n, 1.0)
+        self._q_corr = float(np.quantile(E, level))
         return self._q_corr
 
     def correct(
@@ -68,7 +67,9 @@ class ConformalQuantileRegressor:
         """
         if self._q_corr is None:
             raise RuntimeError("Call calibrate() before correct().")
-        return q_test + self._q_corr
+        # Lower-tail quantile: the conformal correction must WIDEN the
+        # band downward (make the quantile more negative), so subtract.
+        return q_test - self._q_corr
 
     def empirical_coverage(
         self,
