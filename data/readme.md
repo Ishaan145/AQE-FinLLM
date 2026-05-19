@@ -7,7 +7,6 @@ URL:  kaggle.com/datasets/dyutidasmahaptra/s-and-p-500-with-financial-news-headl
 2003–2020, full-text Indian financial news (Economic Times). Covers most of your test window: nifty_news_2003_2020.csv
 
 # 1. Download both datasets from Kaggle, unzip, place CSVs in:
-#    C:\Users\ishaan\Desktop\AQE-FINLLM\aqe_finllm\
 #    Rename them to:
 #      sp500_headlines_2008_2024.csv
 #      nifty_news_2003_2020.csv
