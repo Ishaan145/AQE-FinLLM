@@ -178,15 +178,11 @@ def run_pipeline(market: str, use_sentiment: bool = True) -> dict:
     # ── 7. Backtesting ────────────────────────────────────────────
     print("[7] Running backtesting suite...")
 
-    # Build VaR from each single base learner for comparison
-    single_vars = {}
-    for name in learners:
-        q = test_preds[name][cfg.TAU_VAR]
-        q = np.where(np.isnan(q), np.nanmean(q), q)
-        single_vars[name] = -q
-
-    single_vars["AQE_FinLLM"] = var_aqe
-    single_vars["AQE_FinLLM_CQR"] = var_cqr
+    # Only backtest the ensemble + CQR variant (skip per-learner rows)
+    single_vars = {
+        "AQE_FinLLM":     var_aqe,
+        "AQE_FinLLM_CQR": var_cqr,
+    }
 
     results = run_all_models_backtest(
         single_vars, y_te, market=market,
@@ -200,9 +196,13 @@ def run_pipeline(market: str, use_sentiment: bool = True) -> dict:
         print(f"  {res}")
 
     # ── 8. Diebold-Mariano vs. baseline ───────────────────────────
-    if "lgbm" in single_vars:
+    # Pull LightGBM VaR directly from base predictions for the DM test,
+    if "lgbm" in test_preds:
+        lgbm_q = test_preds["lgbm"][cfg.TAU_VAR]
+        lgbm_q = np.where(np.isnan(lgbm_q), np.nanmean(lgbm_q), lgbm_q)
+        lgbm_var = -lgbm_q
         dm_stat, dm_p = diebold_mariano(
-            y_te, var_aqe, single_vars["lgbm"], alpha=cfg.TAU_VAR
+            y_te, var_aqe, lgbm_var, alpha=cfg.TAU_VAR
         )
         print(f"\n  DM test (AQE-FinLLM vs LightGBM): "
               f"stat={dm_stat:.3f}  p={dm_p:.4f}")

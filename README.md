@@ -58,10 +58,10 @@ aqe_finllm/
 
 Download both datasets from Kaggle, unzip, place CSVs in project root AQE-FINLLM, Downloaded Kaggle datasets with renaming already available in project repository for reference
 ```bash
-Kaggle 2008–2024, daily headlines, perfectly covers your full test window
+Kaggle 2008–2024, daily headlines,
 URL:  kaggle.com/datasets/dyutidasmahaptra/s-and-p-500-with-financial-news-headlines-20082024
 
-Kaggle Full-text Indian financial news,2003–2020 (Economic Times). Covers most of your test 
+Kaggle Full-text Indian financial news,2003–2020 (Economic Times)
 URL:  https://www.kaggle.com/datasets/hkapoor/indian-financial-news-articles-20032020
 
     Rename them to:
@@ -77,12 +77,13 @@ python -m venv .venv
 pip install -r requirements.txt
 pip install feedparser
 pip install fugashi unidic-lite
+# Optional as repo already contains these normalized data
 python -m data.build_corpus        # rss_live.csv
 python -m data.normalize_corpus    # articles.csv (RSS merged)
-# ONE-TIME sentiment (Module A + FinBERT)
+# ONE-TIME sentiment Module A + FinBERT (optional as it takes too much time)
 python -m data.fetch_sentiment --input articles.csv --output data\cache\
 python -m data.fetch_market_data
-# RUN PIPELINE (market data + Modules B/C/D + backtest) — repeat per market
+# RUN PIPELINE (market data + Modules B/C/D + backtest)
 python main.py --market NIFTY50
 ```
 ---

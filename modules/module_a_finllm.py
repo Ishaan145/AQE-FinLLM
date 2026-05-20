@@ -201,7 +201,7 @@ def aggregate_daily_sentiment(
     """
     if lang_map is None:
         lang_map = {
-            "SP500": "en", "NIKKEI": "ja", "BITCOIN": "en",
+            "SP500": "en", "NIKKEI": "ja,en", "BITCOIN": "en",
             "NIFTY50": "en", "BANKNIFTY": "en",
         }
 
