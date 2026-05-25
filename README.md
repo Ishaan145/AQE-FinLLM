@@ -85,6 +85,10 @@ python -m data.fetch_sentiment --input articles.csv --output data\cache\
 python -m data.fetch_market_data
 # RUN PIPELINE (market data + Modules B/C/D + backtest)
 python main.py --market NIFTY50
+python main.py --market SP500
+python main.py --market BITCOIN
+python main.py --market NIKKEI
+python main.py --market BANKNIFTY
 ```
 ---
 ## Note: 
