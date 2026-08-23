@@ -198,9 +198,11 @@ All experiments are implemented in Python 3.11 using PyTorch 2.1, LightGBM 4.2, 
 
 ## Citation
 ```
-@inproceedings{aqefinllm2026,
+@inproceedings{
+  aqefinllm2026,
   title  = {Cross-Market Tail Risk Estimation using Adaptive Quantile Ensembles, FinLLM Sentiment Fusion, and Conformal Calibration},
-  author = {Anonymous},
-  booktitle = {CIFEr 2026},
+  author = {Ishaan Saxena and Chinmay Bhardwaj and Manoj K Rajpoot},
+  booktitle = {IEEE Computational Intelligence in Financial Engineering and Economics (CIFEr) 2026},
+  year={2026},
 }
 ```
