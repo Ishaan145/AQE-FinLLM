@@ -1,5 +1,5 @@
 # AQE-FinLLM: Adaptive Quantile Ensemble with Multimarket LLM Sentiment Fusion
-Cross-Market Tail Risk Estimation |  **CIFEr 2026** 
+Cross-Market Tail Risk Estimation using Adaptive Quantile Ensembles, FinLLM Sentiment Fusion, and Conformal Calibration|  ** 2026 IEEE Symposium on Computational Intelligence for Financial Engineering and Economics (CIFEr)**
 
 ---
 ## Markets Evaluated with MARKET_KEYWORDS
@@ -198,11 +198,12 @@ All experiments are implemented in Python 3.11 using PyTorch 2.1, LightGBM 4.2, 
 
 ## Citation
 ```
-@inproceedings{
-  saxena2026aqefinllm,
-  title  = {Cross-Market Tail Risk Estimation using Adaptive Quantile Ensembles, FinLLM Sentiment Fusion, and Conformal Calibration},
-  author = {Ishaan Saxena and Chinmay Bhardwaj and Manoj K Rajpoot},
-  booktitle = {IEEE Computational Intelligence in Financial Engineering and Economics (CIFEr) 2026},
+@INPROCEEDINGS{11692408,
+  author={Saxena, Ishaan and Bhardwaj, Chinmay and Rajpoot, Manoj K.},
+  booktitle={2026 IEEE Symposium on Computational Intelligence for Financial Engineering and Economics (CIFEr)}, 
+  title={Cross-Market Tail Risk Estimation using Adaptive Quantile Ensembles, FinLLM Sentiment Fusion, and Conformal Calibration}, 
   year={2026},
-}
+  pages={276-283},
+  keywords={Modeling;Printing;Tail;Equations;Reactive power;Testing;Windows;Tagging;Training;Calibration;Tail Risk Forecasting;Adaptive Ensemble Learning;Quantile Regression;FinBERT;Machine Learning;Value at Risk},
+  doi={10.1109/CIFEr67845.2026.11692408}}
 ```
