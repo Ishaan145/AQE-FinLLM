@@ -1,7 +1,38 @@
 # AQE-FinLLM: Adaptive Quantile Ensemble with Multimarket LLM Sentiment Fusion
-Cross-Market Tail Risk Estimation using Adaptive Quantile Ensembles, FinLLM Sentiment Fusion, and Conformal Calibration|  ** 2026 IEEE Symposium on Computational Intelligence for Financial Engineering and Economics (CIFEr)**
+Cross-Market Tail Risk Estimation using Adaptive Quantile Ensembles, FinLLM Sentiment Fusion, and Conformal Calibration
+**2026 IEEE Symposium on Computational Intelligence for Financial Engineering and Economics (CIFEr)**
 
 ---
+
+## Architecture
+![alt text](architecture.png)
+
+```bash
+1. Raw Market Data + Financial News
+2. FinBERT Sentiment Pipeline
+3. 12-Feature Engineering
+4. Quantile ML Models (4)
+5. Adaptive Hedge Ensemble
+6. Conformal Calibration (CQR)
+7. VaR / CVaR Forecasts
+8. Backtesting + SHAP Explainability
+```
+
+## Dataset
+
+Download both datasets from Kaggle, unzip, place CSVs in project root AQE-FINLLM, Downloaded Kaggle datasets with renaming already available in project repository for reference
+```bash
+Kaggle 2008–2024, daily headlines,
+URL:  kaggle.com/datasets/dyutidasmahaptra/s-and-p-500-with-financial-news-headlines-20082024
+
+Kaggle Full-text Indian financial news,2003–2020 (Economic Times)
+URL:  https://www.kaggle.com/datasets/hkapoor/indian-financial-news-articles-20032020
+
+    Rename them to:
+      sp500_headlines_2008_2024.csv
+      nifty_news_2003_2020.csv
+```
+
 ## Markets Evaluated with MARKET_KEYWORDS
 ```bash
 SP500(`^GSPC`)       : ["S&P", "SPX", "Fed", "Federal Reserve", "Wall Street", "SEC", ...]
@@ -38,35 +69,6 @@ aqe_finllm/
 ├── config.py                     # All hyperparameters, markets, paths
 ├── requirements.txt
 └── README.md
-```
-
-## Architecture
-![alt text](architecture.png)
-
-```bash
-1. Raw Market Data + Financial News
-2. FinBERT Sentiment Pipeline
-3. 12-Feature Engineering
-4. Quantile ML Models (4)
-5. Adaptive Hedge Ensemble
-6. Conformal Calibration (CQR)
-7. VaR / CVaR Forecasts
-8. Backtesting + SHAP Explainability
-```
-
-## Dataset
-
-Download both datasets from Kaggle, unzip, place CSVs in project root AQE-FINLLM, Downloaded Kaggle datasets with renaming already available in project repository for reference
-```bash
-Kaggle 2008–2024, daily headlines,
-URL:  kaggle.com/datasets/dyutidasmahaptra/s-and-p-500-with-financial-news-headlines-20082024
-
-Kaggle Full-text Indian financial news,2003–2020 (Economic Times)
-URL:  https://www.kaggle.com/datasets/hkapoor/indian-financial-news-articles-20032020
-
-    Rename them to:
-      sp500_headlines_2008_2024.csv
-      nifty_news_2003_2020.csv
 ```
 
 ## Run pipeline 
